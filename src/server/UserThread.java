@@ -6,6 +6,7 @@ import java.net.Socket;
 /**
  * Handles connections from each connected user (client); allows for multiple
  * connections.
+ * Exit Chat room by writing "peace".
  */
 public class UserThread extends Thread {
     private Socket socket;
@@ -45,7 +46,7 @@ public class UserThread extends Thread {
                 serverMessage = "[" + userName + "]: " + clientMessage;
                 server.broadcast(serverMessage, this);
 
-            } while (!clientMessage.equals("bye"));
+            } while (!clientMessage.equals("peace"));
 
             server.removeUser(userName, this);
             socket.close();
