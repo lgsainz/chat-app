@@ -77,12 +77,12 @@ public class ChatServer {
         boolean removed = userNames.remove(userName);
         if (removed) {
             userThreads.remove(aUser);
-            System.out.println("The user " + userName + " quitted");
+            System.out.println("The user " + userName + " left the chat room.");
         }
     }
 
     /**
-     * Return userNames.
+     * Return list of userNames.
      */
     public Set<String> getUserNames() {
         return this.userNames;
