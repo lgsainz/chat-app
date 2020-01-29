@@ -33,11 +33,11 @@ public class ChatServer {
      * Starts new chat server and listen for users.
      */
     public void execute() {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
+        try (ServerSocket ss = new ServerSocket(port)) {
 
             System.out.println("Chat server is listening on port " + port);
             while (true) {
-                Socket socket = serverSocket.accept();
+                Socket socket = ss.accept();
                 System.out.println("New user connected");
 
                 UserThread newUser = new UserThread(socket, this);
