@@ -30,6 +30,9 @@ public class ChatClient {
         try {
             Socket socket = new Socket(hostname, port);
             System.out.println("Now connected to the chat server!");
+
+            new ReadThread(socket, this).start();
+//            new WriteThread(socket, this).start();
         }
         catch (UnknownHostException e) {
             System.out.println("Error: server not found " + e.getMessage());
@@ -37,6 +40,20 @@ public class ChatClient {
         catch (IOException e) {
             System.out.println("I/O error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Set new username.
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    /**
+     * Get current user.
+     */
+    public String getUserName() {
+        return this.userName;
     }
 
     public static void main(String[] args) {
@@ -50,5 +67,4 @@ public class ChatClient {
         ChatClient client = new ChatClient(hostname, port);
         client.execute();
     }
-
 }
