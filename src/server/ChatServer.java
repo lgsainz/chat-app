@@ -3,16 +3,15 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Vector;
 
 /**
- * Chat server program.
+ * Handles the Server side of the Chat application.
  */
 public class ChatServer {
     private int port;
-    private Set<String> userNames = new HashSet<>();
-    private Set<UserThread> userThreads = new HashSet<>();
+    private Vector<String> userNames = new Vector<>();
+    private Vector<UserThread> userThreads = new Vector<>();
 
     public ChatServer(int port) {
         this.port = port;
@@ -67,7 +66,13 @@ public class ChatServer {
      * Adds new user to userNames.
      */
     public void addUserName(String userName) {
-        userNames.add(userName);
+        if (!userNames.contains(userName)) {
+            userNames.add(userName);
+        }
+        else {
+            System.out.println("That username is taken, please enter a new username.");
+        }
+
     }
 
     /**
@@ -84,7 +89,7 @@ public class ChatServer {
     /**
      * Return list of userNames.
      */
-    public Set<String> getUserNames() {
+    public Vector<String> getUserNames() {
         return this.userNames;
     }
 
