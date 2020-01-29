@@ -55,9 +55,9 @@ public class ChatServer {
      * Delivers a message from one user to all other users.
      */
     public void broadcast(String message, UserThread excludeUser) {
-        for (UserThread aUser : userThreads) {
-            if (aUser != excludeUser) {
-                aUser.sendMessage(message);
+        for (UserThread userT : userThreads) {
+            if (userT != excludeUser) {
+                userT.sendMessage(message);
             }
         }
     }
