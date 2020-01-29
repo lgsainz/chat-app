@@ -11,6 +11,7 @@ public class ReadThread extends Thread {
 
     private Socket socket;
     private ChatClient client;
+    private BufferedReader reader;
 
     /**
      * Read input from server.
@@ -23,7 +24,7 @@ public class ReadThread extends Thread {
 
         try {
             InputStreamReader in = new InputStreamReader(socket.getInputStream());
-            BufferedReader reader = new BufferedReader(in);
+            reader = new BufferedReader(in);
         }
         catch (IOException e) {
             System.out.println("Error getting input stream: " + e.getMessage());
@@ -36,5 +37,21 @@ public class ReadThread extends Thread {
      */
     @Override
     public void run() {
+        while (true) {
+            try {
+                // displays response message from server
+                String serverMsg = reader.readLine();
+                System.out.println("\n" + serverMsg);
+
+                // displays user's name for them to send another message or quit
+                if (client.getUserName() != null) {
+                    System.out.print("[" + client.getUserName() + "]: ");
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading from server: " + e.getMessage());
+                e.printStackTrace();
+                break;
+            }
+        }
     }
 }
