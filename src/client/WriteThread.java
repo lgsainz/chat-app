@@ -40,13 +40,10 @@ public class WriteThread extends Thread {
 
         do {
             userName = console.readLine("Enter your username: ");
-
-            // set new username
-            client.setUserName(userName);
-
         } while (!client.getUnique());
 
         writer.println(userName);
+        client.setUserName(userName);
 
         // read message from client and write to server until they end connection
         String text;

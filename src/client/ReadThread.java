@@ -12,7 +12,6 @@ public class ReadThread extends Thread {
     private Socket socket;
     private ChatClient client;
     private BufferedReader reader;
-//    private boolean flag = true;
 
     /**
      * Read input from server.
@@ -44,9 +43,10 @@ public class ReadThread extends Thread {
                 String serverMsg = reader.readLine();
                 System.out.println("\n" + serverMsg);
 
+                // check if incoming username already exists in server list of online users
                 if (serverMsg.equals("Username is taken. Please use choose a new user.")) {
-//                    flag = false;
                      client.setUnique(false);
+//                     client.setUserName(null);
                 }
 
                 // displays user's name for them to send another message or quit

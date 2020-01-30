@@ -66,6 +66,7 @@ public class ChatServer {
      * Adds new user to userNames.
      */
     public boolean addUserName(String userName) {
+        // Check if username already exists (for connected users)
         if (!userNames.contains(userName)) {
             userNames.add(userName);
         }
@@ -75,7 +76,6 @@ public class ChatServer {
         }
         System.out.println("users: " + userNames);
         return true;
-//        userNames.add(userName);
     }
 
     /**

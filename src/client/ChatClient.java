@@ -12,7 +12,7 @@ public class ChatClient {
     private String hostname;
     private int port;
     private String userName;
-    private boolean isUnique;
+    private boolean isUnique = true;
 
     /**
      * ChatClient constructor.
@@ -47,9 +47,14 @@ public class ChatClient {
      * Set new username.
      */
     public void setUserName(String userName) {
+        if (userName == null) {
+            isUnique = false;
+        }
+        else if (this.getUnique()) {
             this.userName = userName;
-            isUnique = true;
+        }
     }
+
 
     /**
      * Get current user.
@@ -58,10 +63,16 @@ public class ChatClient {
         return this.userName;
     }
 
+    /**
+     * Set boolean flag to identify if incoming username is unique.
+     */
     public void setUnique(boolean bool) {
         isUnique = bool;
     }
 
+    /**
+     * Get value of "unique flag" for incoming username.
+     */
     public boolean getUnique() {
         return isUnique;
     }
