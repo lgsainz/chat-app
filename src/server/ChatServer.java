@@ -65,14 +65,17 @@ public class ChatServer {
     /**
      * Adds new user to userNames.
      */
-    public void addUserName(String userName) {
+    public boolean addUserName(String userName) {
         if (!userNames.contains(userName)) {
             userNames.add(userName);
         }
         else {
-            System.out.println("That username is taken, please enter a new username.");
+            System.out.println("Username taken.");
+            return false;
         }
-
+        System.out.println("users: " + userNames);
+        return true;
+//        userNames.add(userName);
     }
 
     /**

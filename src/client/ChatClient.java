@@ -12,6 +12,7 @@ public class ChatClient {
     private String hostname;
     private int port;
     private String userName;
+    private boolean isUnique;
 
     /**
      * ChatClient constructor.
@@ -32,7 +33,7 @@ public class ChatClient {
             System.out.println("Now connected to the chat server!");
 
             new ReadThread(socket, this).start();
-//            new WriteThread(socket, this).start();
+            new WriteThread(socket, this).start();
         }
         catch (UnknownHostException e) {
             System.out.println("Error: server not found " + e.getMessage());
@@ -46,7 +47,8 @@ public class ChatClient {
      * Set new username.
      */
     public void setUserName(String userName) {
-        this.userName = userName;
+            this.userName = userName;
+            isUnique = true;
     }
 
     /**
@@ -55,6 +57,15 @@ public class ChatClient {
     public String getUserName() {
         return this.userName;
     }
+
+    public void setUnique(boolean bool) {
+        isUnique = bool;
+    }
+
+    public boolean getUnique() {
+        return isUnique;
+    }
+
 
     public static void main(String[] args) {
         if (args.length < 2) {

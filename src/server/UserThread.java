@@ -32,27 +32,40 @@ public class UserThread extends Thread {
             writer = new PrintWriter(output, true);
 
             printUsers();
-
-            String userName = reader.readLine();
-            server.addUserName(userName);
-
-            String serverMessage = "New user connected: " + userName;
-            server.broadcast(serverMessage, this);
-
-            String clientMessage;
+            String userName;
 
             do {
-                clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
+
+                userName = reader.readLine();
+//                server.addUserName(userName);
+
+                if (server.addUserName(userName) != true) {
+                    writer.println("Username is taken. Please use choose a new user.");
+                    continue;
+                }
+
+                String serverMessage = "New user connected: " + userName;
                 server.broadcast(serverMessage, this);
 
-            } while (!clientMessage.equals("peace"));
+                String clientMessage;
 
-            server.removeUser(userName, this);
-            socket.close();
+                do {
+                    clientMessage = reader.readLine();
+                    serverMessage = "[" + userName + "]: " + clientMessage;
+                    server.broadcast(serverMessage, this);
 
-            serverMessage = userName + " has left the chat room.";
-            server.broadcast(serverMessage, this);
+                } while (!clientMessage.equals("peace"));
+
+                server.removeUser(userName, this);
+                socket.close();
+
+                serverMessage = userName + " has left the chat room.";
+                server.broadcast(serverMessage, this);
+                break;
+
+            } while (true);
+
+
         }
         catch (IOException e) {
             System.out.println("Error in UserThread: " + e.getMessage());

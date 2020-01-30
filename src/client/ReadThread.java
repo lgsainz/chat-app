@@ -12,6 +12,7 @@ public class ReadThread extends Thread {
     private Socket socket;
     private ChatClient client;
     private BufferedReader reader;
+//    private boolean flag = true;
 
     /**
      * Read input from server.
@@ -42,6 +43,11 @@ public class ReadThread extends Thread {
                 // displays response message from server
                 String serverMsg = reader.readLine();
                 System.out.println("\n" + serverMsg);
+
+                if (serverMsg.equals("Username is taken. Please use choose a new user.")) {
+//                    flag = false;
+                     client.setUnique(false);
+                }
 
                 // displays user's name for them to send another message or quit
                 if (client.getUserName() != null) {

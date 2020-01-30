@@ -2,10 +2,9 @@ package client;
 
 import java.io.Console;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This thread reads the user's input and sends it to the server. It will run in an infinite
@@ -16,13 +15,18 @@ public class WriteThread extends Thread {
     private Socket socket;
     private ChatClient client;
     private PrintWriter writer;
-    private Set<String> userNames = new HashSet<>();
 
     public WriteThread(Socket socket, ChatClient client) {
         this.socket = socket;
         this.client = client;
 
-        
+        try {
+            OutputStream output = socket.getOutputStream();
+            writer = new PrintWriter(output, true);
+        } catch (IOException e) {
+            System.out.println("Error getting output stream: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -30,30 +34,34 @@ public class WriteThread extends Thread {
      */
     @Override
     public void run() {
-
+        // prompt client for username
         Console console = System.console();
-        String userName = console.readLine("Enter your username: ");
+        String userName;
 
-        if (!userNames.contains(userName)) {
+        do {
+            userName = console.readLine("Enter your username: ");
+
+            // set new username
             client.setUserName(userName);
-            writer.println(userName);
 
-            String text;
-            do {
-                text = console.readLine("[" + userName + "]: ");
-                writer.println(text);
-            } while (!text.equals("peace"));
+        } while (!client.getUnique());
 
-            try {
-                socket.close();
-            }
-            catch (IOException e) {
-                System.out.println("Error writing to the server: " + e.getMessage());
-            }
+        writer.println(userName);
 
+        // read message from client and write to server until they end connection
+        String text;
+        do {
+            text = console.readLine("[" + userName + "]: ");
+            writer.println(text);
+        } while (!text.equals("peace"));
+
+        // close connection
+        try {
+            socket.close();
         }
-        else {
-            System.out.println("That username is taken, please enter a new username.");
+        catch (IOException e) {
+            System.out.println("Error writing to the server: " + e.getMessage());
         }
+
     }
 }
